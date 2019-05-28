@@ -11,7 +11,7 @@
 
 ## Description.
 
-In order to solve the Ball Clock Program I create the following data structures a stack and queue.
+In order to solve the Ball Clock Program I create the following data structures a stack and queue. I also created a Clock class to handle the clocks functionality.
 
 Since the program was going to be adding to end and removing from the front ball when working with the ball container, I used a queue to hold each of the balls.
 
