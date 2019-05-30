@@ -59,14 +59,6 @@ class Stack {
     isEmpty() {
         return this.items.length === 0 ? true: false;
     }
-    
-    //Purpose: get the current size of the stack.
-    //Params: None
-    //Outcome: none
-    //Return: the size of the array as an int.
-    currentSize() {
-        return this.items.length;
-    }
 }
 
 //Implement A queue
@@ -76,7 +68,6 @@ class Queue {
         for(let i = 0; i < size; i++) {
             this.items[i] = i;
         }
-        this.size = size;
     }
 
     //Purpose: Add an item to the end of the queue.
@@ -181,14 +172,24 @@ class Clock {
     //Outcome: none
     //Return: true, if the balls are back in their original location, otherwise false.
     inInitalState() {
-
+        var end = this.ballHolder.items.length - 1;
+        var stop = this.ballHolder.items.length / 2;
         //loop through the bottom queue check if the items are in their original place. if not return false.
-        for(let i = 0; i < this.size; i++) {
-            if(this.ballHolder.items[i] != i) {
+        for(let i = 0; i < stop; i++) {
+            if(this.ballHolder.items[i] != i || this.ballHolder.items[end] !== end ) {
                 return false;
             }
+            end--;
         }
         return true;
+    }
+
+    //Purpose: get the current size of the queue.
+    //Params: None
+    //Outcome: none
+    //Return: the size of the array as an int.
+    getCurrentSize() {
+        return this.ballHolder.items.length;
     }
 }
 
@@ -200,8 +201,7 @@ function startClock(ballNumber) {
     //Create a new clock and set the inital state to false and the min to false
     let newClock = new Clock(ballNumber);
     let initialState = false;
-    let min = 0;
-    const HOURS_DAY_CONVERTED = 24 * 60;
+    let days = 0;
 
     //start the computation timer.
     console.time('Computation Time:')
@@ -210,15 +210,14 @@ function startClock(ballNumber) {
     while(!initialState) {
         //run the clock for each min.
         newClock.runClock();
-        //check if the clock is in its inital state.
-        initialState = newClock.inInitalState();
-        //increase the min count.
-        min++;
-    }
-    
-    //once the clocks inital state has been reaced find the days it tok to get there.
-    var days = Math.round(min/HOURS_DAY_CONVERTED);
-    
+
+        //once all the balls are back into the queue a full day has passed. Check inital state.
+        if(newClock.getCurrentSize() == ballNumber) {
+            //check if the clock is in its inital state.
+            initialState = newClock.inInitalState();
+            days++;
+        }
+    }    
     //print out the number of days it took to get back to the inital state, and the computation time.
     console.log(`${ballNumber} balls take ${days} days`);
     console.timeEnd('Computation Time:');
